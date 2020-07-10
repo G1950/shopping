@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: register-center
+server:
+  port: 8761
+
+#配置双注册中心
+eureka:
+  instance:
+    instance-id: register-center01
+    hostname: master.eureka.com
+  client:
+    serviceUrl:
+      defaultZone: http://slave.eureka.com:8762/eureka/

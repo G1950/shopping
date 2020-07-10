@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: manager-web
+  resources:
+    static-locations: classpath:/static
+  main:
+    allow-bean-definition-overriding: true
+server:
+  port: 8766
+
+eureka:
+  instance:
+    instance-id: manager-web
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://slave.eureka.com:8762/eureka/,http://master.eureka.com:8761/eureka/
