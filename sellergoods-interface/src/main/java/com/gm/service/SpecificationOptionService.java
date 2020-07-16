@@ -15,7 +15,7 @@ public interface SpecificationOptionService {
 
     Result saveSpecificationOption(List<TbSpecificationOption> specificationOption);
 
-    Result updateSpecificationOption(TbSpecificationOption specificationOption);
+    Result updateSpecificationOption(List<TbSpecificationOption> specificationOption);
 
     Result deleteSpecificationOption(Long[] ids);
 

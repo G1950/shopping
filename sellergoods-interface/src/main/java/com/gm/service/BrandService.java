@@ -18,4 +18,6 @@ public interface BrandService {
     Result updateBrand(TbBrand brand);
 
     Result deleteBrand(Long[] ids);
+
+    Result deleteOneBrand(Long id);
 }

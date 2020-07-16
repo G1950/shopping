@@ -51,7 +51,7 @@ public class SpecificationOptionController {
     }
 
     @PutMapping("/specificationOption")
-    public Result updateSpecificationOption(@RequestBody TbSpecificationOption specificationOption) {
+    public Result updateSpecificationOption(@RequestBody List<TbSpecificationOption> specificationOption) {
         return specificationOptionFeignClient.updateSpecificationOption(specificationOption);
     }
 

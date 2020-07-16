@@ -4,10 +4,8 @@ import com.gm.common.PageResult;
 import com.gm.common.Result;
 import com.gm.pojo.TbSpecification;
 
-import java.util.List;
-
 public interface SpecificationService {
-    List<TbSpecification> findAll();
+    Result findAll();
 
     PageResult findPage(Integer pageNo, Integer pageSize);
 
@@ -18,4 +16,6 @@ public interface SpecificationService {
     Result updateSpecification(TbSpecification specification);
 
     Result deleteSpecification(Long[] ids);
+
+    Result deleteOneSpecification(Long id);
 }

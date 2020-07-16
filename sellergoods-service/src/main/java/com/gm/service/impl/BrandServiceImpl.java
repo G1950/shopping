@@ -9,6 +9,8 @@ import com.gm.common.ResultEnum;
 import com.gm.mapper.TbBrandMapper;
 import com.gm.pojo.TbBrand;
 import com.gm.pojo.TbBrandExample;
+import com.gm.pojo.TbSpecification;
+import com.gm.pojo.TbSpecificationExample;
 import com.gm.service.BrandService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -72,8 +74,13 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Result saveBrand(TbBrand brand) {
         try {
+            TbBrandExample example = new TbBrandExample();
+            TbBrandExample.Criteria criteria = example.createCriteria();
+            criteria.andNameEqualTo(brand.getName());
+            List<TbBrand> tbBrands = tbBrandMapper.selectByExample(example);
+            if (tbBrands.size() != 0)
+                return Result.build(ResultEnum.BRAND_EXIST);
             tbBrandMapper.insert(brand);
-
             return Result.build(ResultEnum.SAVE_SUCCESS);
         } catch (Exception e) {
             log.info("添加异常：" + e.getMessage());
@@ -97,6 +104,17 @@ public class BrandServiceImpl implements BrandService {
             for (Long id : ids) {
                 tbBrandMapper.deleteByPrimaryKey(id);
             }
+            return Result.build(ResultEnum.DELETE_SUCCESS);
+        } catch (Exception e) {
+            return Result.build(ResultEnum.DELETE_ERROR);
+        }
+    }
+
+    @Override
+    public Result deleteOneBrand(Long id) {
+        try {
+            tbBrandMapper.deleteByPrimaryKey(id);
+
             return Result.build(ResultEnum.DELETE_SUCCESS);
         } catch (Exception e) {
             return Result.build(ResultEnum.DELETE_ERROR);

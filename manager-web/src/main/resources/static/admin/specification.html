@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="../css/style.css">
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
+    <!-- Font Awesome CSS-->
+    <link href="../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!--引入angular.js-->
     <script src="../plugins/angularjs/angular.min.js"></script>
     <!--引入分页组件-->
@@ -42,9 +43,12 @@
             <div class="form-group form-inline">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
-                            data-target="#editModal" ng-click="entity={}"><i class="fa fa-file-o" ></i> 新建
+                            data-target="#editModal" ng-click="entity={specificationOptionList: []}"><i
+                            class="fa fa-file-o"></i> 新建
                     </button>
-                    <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+                    <button type="button" class="btn btn-default" title="删除" ng-click="deleteSpecification()"><i
+                            class="fa fa-trash-o"></i> 删除
+                    </button>
 
                     <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
                             class="fa fa-refresh"></i> 刷新
@@ -73,12 +77,14 @@
             </thead>
             <tbody>
             <tr ng-repeat="entity in list">
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" ng-click="deleteSelect($event,entity.id)"></td>
                 <td>{{entity.id}}</td>
                 <td>{{entity.specName}}</td>
                 <td class="text-center">
                     <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal"
                             ng-click="updateSpecification($index)">修改
+                    </button>
+                    <button type="button" class="btn bg-red btn-xs" ng-click="deleteOneSpecification(entity.id)">删除
                     </button>
                 </td>
             </tr>
@@ -132,7 +138,8 @@
                             <input class="form-control" placeholder="排序" ng-model="optionList.orders">
                         </td>
                         <td>
-                            <button type="button" class="btn btn-default" title="删除" ng-click="deleteOptionList($index)"><i class="fa fa-trash-o"></i> 删除
+                            <button type="button" class="btn btn-default" title="删除" ng-click="deleteOption($index)"><i
+                                    class="fa fa-trash-o"></i> 删除
                             </button>
                         </td>
                     </tr>

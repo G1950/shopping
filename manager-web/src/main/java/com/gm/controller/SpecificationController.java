@@ -54,5 +54,10 @@ public class SpecificationController {
         return specificationFeignClient.deleteSpecification(ids);
     }
 
+    @DeleteMapping("/specification/{id}")
+    public Result deleteSpecification(@PathVariable("id") Long id) {
+        return specificationFeignClient.deleteOneSpecification(id);
+    }
+
 
 }

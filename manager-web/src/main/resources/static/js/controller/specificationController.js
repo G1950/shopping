@@ -29,13 +29,6 @@ app.controller('specificationController', function ($scope, $controller, specifi
         })
     };
 
-    //添加规格数据
-    $scope.saveSpecificationOption = function () {
-        specificationOptionService.save($scope.entity.specificationOptionList).success(function (data) {
-            if (data.code !== 1)
-                alert(data.msg)
-        })
-    };
 
     $scope.entity = {specificationOptionList: []};
     //修改规格数据
@@ -55,26 +48,33 @@ app.controller('specificationController', function ($scope, $controller, specifi
             method = specificationService.save;
         method($scope.entity).success(function (data) {
             if (data.code === 1)
-            {
-                $scope.saveSpecificationOption();
-                $scope.reloadList();//重新加载
-            }else {
-                alert(data.msg)
-            }
+                $scope.deleteSpecificationOption();
+            else
+                alert(data.msg);
+            $scope.reloadList();//重新加载
+
         })
     }
 
     //删除表格数据
     $scope.deleteSpecification = function () {
         specificationService.delete($scope.selectIds).success(function (data) {
-            if (data.code === 1) {
-                alert("删除成功");
-            } else
+            if (data.code !== 1)
                 alert(data.msg)
             $scope.reloadList();//重新加载
         })
 
     };
+
+    //删除规格数据
+    $scope.deleteSpecificationOption = function () {
+        return $scope.deleteOptionList == null ? false :
+            specificationOptionService.delete($scope.deleteOptionList).success(function (data) {
+                if (data.code !== 1)
+                    alert(data.msg)
+            })
+    };
+
 
     //模糊查询品牌数据
     $scope.search = function () {
@@ -86,12 +86,23 @@ app.controller('specificationController', function ($scope, $controller, specifi
 
     //添加规格行
     $scope.addOptionList = function (id) {
-        $scope.entity.specificationOptionList.push({specId:id});
+        $scope.entity.specificationOptionList.push({specId: id});
     }
 
     //删除规格行
-    $scope.deleteOptionList = function (index) {
-        $scope.entity.specificationOptionList.splice(index, 1);
+    $scope.deleteOptionList = []
+    $scope.deleteOption = function (index) {
+        var splice = $scope.entity.specificationOptionList.splice(index, 1)[0];
+        if (splice.id != null && splice.id !== '')
+            $scope.deleteOptionList.push(splice.id)
     }
 
+    //删除单行
+    $scope.deleteOneSpecification = function (id) {
+        specificationService.deleteOne(id).success(function (data) {
+            if (data.code !== 1)
+                alert(data.msg)
+            $scope.reloadList()
+        })
+    }
 });	

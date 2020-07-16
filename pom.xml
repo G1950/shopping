@@ -17,6 +17,8 @@
         <module>search-interface</module>
         <module>search-service</module>
         <module>manager-web</module>
+        <module>shop-web</module>
+        <module>file-service</module>
     </modules>
     <packaging>pom</packaging>
     <description>品优购商城项目</description>
@@ -210,9 +212,11 @@
                     </delimiters>
                     <!--防止字体、图标文件被编译破坏-->
                     <nonFilteredFileExtensions>
-                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
                         <nonFilteredFileExtension>woff</nonFilteredFileExtension>
                         <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>svg</nonFilteredFileExtension>
                         <nonFilteredFileExtension>ico</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>

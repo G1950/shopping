@@ -2,8 +2,8 @@ package com.gm.common;
 
 public enum ResultEnum {
     SUCCESS(1, "成功"),
-    FAILURE(0,"失败"),
-    EXCEPTION(-1,"异常"),
+    FAILURE(0, "失败"),
+    EXCEPTION(-1, "异常"),
     ILLEGAL_OPTIONS(-1, "非法操作"),
     SERVER_CONNECT_TIME_OUT(408, "服务器连接超时，请稍后重试"),
 
@@ -22,8 +22,8 @@ public enum ResultEnum {
     SEND_MESSAGE_FAIL(201, "发送短信失败"),
     SMS_ERROR_CODE(202, "短信验证码无效"),
 
-    CAPTCHA_ERROR(0,"验证码错误"),
-    CAPTCHA_SUCCESS(1,"验证码正确"),
+    CAPTCHA_ERROR(0, "验证码错误"),
+    CAPTCHA_SUCCESS(1, "验证码正确"),
 
     SAVE_SUCCESS(1, "添加成功"),
     UPDATE_SUCCESS(1, "更新成功"),
@@ -68,11 +68,22 @@ public enum ResultEnum {
     PAY_FAIL(0, "支付失败"),
     PAY_EXCEPTION(-1, "支付异常"),
 
-    SPECIFICATION_NOT_EXIST(0,"规格分类不存在"),
-    SPECIFIC_NOT_EXIST(0,"规格不存在");;
 
+    BRAND_NOT_EXIST(0, "品牌不存在"),
+    BRAND_EXIST(0, "品牌已存在"),
 
+    TYPETEMPLATE_NOT_EXIST(0, "模板不存在"),
+    TYPETEMPLATE_EXIST(0, "模板已存在"),
 
+    SPECIFICATION_NOT_EXIST(0, "规格分类不存在"),
+    SPECIFIC_NOT_EXIST(0, "规格不存在"),
+    SPECIFICATION_EXIST(0, "规格分类已存在"),
+
+    Seller_EXIST(0, "商户已存在"),
+    Seller_NOT_EXIST(0, "商户不存在"),
+
+    ItemCat_EXIST(0, "分类已存在"),
+    ItemCat_NOT_EXIST(0, "分类不存在");
     private Integer code;
 
     private String message;

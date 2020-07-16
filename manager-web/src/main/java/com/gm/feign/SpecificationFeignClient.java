@@ -29,4 +29,6 @@ public interface SpecificationFeignClient {
     @DeleteMapping("/specification")
     Result deleteSpecification(@RequestParam("ids") Long[] ids);
 
+    @DeleteMapping("/specification/{id}")
+    Result deleteOneSpecification(@PathVariable("id") Long id);
 }

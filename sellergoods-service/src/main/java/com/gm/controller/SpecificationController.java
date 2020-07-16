@@ -26,7 +26,7 @@ public class SpecificationController {
     }
 
     @GetMapping("")
-    public List<TbSpecification> findAllSpecification() {
+    public Result findAllSpecification() {
         return specificationService.findAll();
     }
 
@@ -38,6 +38,11 @@ public class SpecificationController {
     @PutMapping("")
     public Result updateSpecification(@RequestBody TbSpecification specification) {
         return specificationService.updateSpecification(specification);
+    }
+
+    @DeleteMapping("/{id}")
+    public Result deleteOneSpecification(@PathVariable("id") Long id) {
+        return specificationService.deleteOneSpecification(id);
     }
 
     @DeleteMapping("")

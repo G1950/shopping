@@ -45,6 +45,11 @@ public class BrandController {
         return brandService.deleteBrand(ids);
     }
 
+    @DeleteMapping("/{id}")
+    public Result deleteOneBrand(@PathVariable("id") Long id) {
+        return brandService.deleteOneBrand(id);
+    }
+
     @GetMapping("/{pageNo}/{pageSize}")
     public PageResult findPageBrand(@PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize) {
         return brandService.findPage(pageNo, pageSize);
@@ -54,4 +59,5 @@ public class BrandController {
     public Result searchPageBrand(@RequestBody TbBrand brand, @PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize) {
         return brandService.findPage(brand, pageNo, pageSize);
     }
+
 }

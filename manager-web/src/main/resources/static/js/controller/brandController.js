@@ -52,24 +52,33 @@ app.controller('brandController' ,function($scope,$controller   ,brandService){
                 $scope.reloadList();//重新加载
             })
         }
-    
-        //删除表格数据
-        $scope.deleteBrand = function () {
-            brandService.delete($scope.selectIds).success(function (data) {
-                if (data.code === 1) {
-                    $scope.reloadList();//重新加载
-                } else
-                    alert(data.msg)
-            })
-    
-        };
-    
-        //模糊查询品牌数据
-        $scope.search = function () {
-            brandService.search( $scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage,$scope.searchEntity).success(function (res) {
-                $scope.list = res.data.rows;
-                $scope.paginationConf.totalItems = res.data.total
-            })
-        }
+
+    //删除表格数据
+    $scope.deleteBrand = function () {
+        brandService.delete($scope.selectIds).success(function (data) {
+            if (data.code === 1) {
+                $scope.reloadList();//重新加载
+            } else
+                alert(data.msg)
+        })
+
+    };
+
+    //模糊查询品牌数据
+    $scope.search = function () {
+        brandService.search($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage, $scope.searchEntity).success(function (res) {
+            $scope.list = res.data.rows;
+            $scope.paginationConf.totalItems = res.data.total
+        })
+    }
+
+    //删除单行
+    $scope.deleteOneBrand = function (id) {
+        brandService.deleteOne(id).success(function (data) {
+            if (data.code !== 1)
+                alert(data.msg)
+            $scope.reloadList()
+        })
+    }
 
 });	

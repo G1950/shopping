@@ -76,12 +76,14 @@ public class SpecificationOptionServiceImpl implements SpecificationOptionServic
     }
 
     @Override
-    public Result updateSpecificationOption(TbSpecificationOption specificationOption) {
+    public Result updateSpecificationOption(List<TbSpecificationOption> specificationOptions) {
         try {
-            TbSpecificationOption tbSpecificationOption = tbSpecificationOptionMapper.selectByPrimaryKey(specificationOption.getId());
-            if (tbSpecificationOption == null)
-                return Result.build(ResultEnum.SPECIFIC_NOT_EXIST);
-            tbSpecificationOptionMapper.updateByPrimaryKeySelective(specificationOption);
+            for (TbSpecificationOption specificationOption : specificationOptions) {
+                TbSpecificationOption tbSpecificationOption = tbSpecificationOptionMapper.selectByPrimaryKey(specificationOption.getId());
+                if (tbSpecificationOption == null)
+                    continue;
+                tbSpecificationOptionMapper.updateByPrimaryKeySelective(specificationOption);
+            }
             return Result.build(ResultEnum.UPDATE_SUCCESS);
         } catch (Exception e) {
             return Result.build(ResultEnum.UPDATE_ERROR);

@@ -1,11 +1,9 @@
 //品牌控制层
-app.controller('baseController', function ($scope) {
+app.controller('baseController', function ($scope, $filter) {
 
     //表格数据重载
     $scope.reloadList = function () {
         $scope.search();
-        $scope.searchEntity = {};
-
     }
 
     //分页参数
@@ -38,5 +36,8 @@ app.controller('baseController', function ($scope) {
     //模糊查询,记录查询的对象
     $scope.searchEntity = {}
 
-
+    //获取当前时间
+    $scope.getTime = function () {
+        return $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss')
+    }
 });	

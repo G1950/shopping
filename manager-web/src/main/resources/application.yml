@@ -5,6 +5,9 @@ spring:
     static-locations: classpath:/static
   main:
     allow-bean-definition-overriding: true
+  mvc:
+    view:
+      suffix: .html
 server:
   port: 8766
 

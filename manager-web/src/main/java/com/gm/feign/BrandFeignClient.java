@@ -8,25 +8,27 @@ import org.springframework.web.bind.annotation.*;
 
 
 @FeignClient("SELLERGOODS-SERVICE")
-public interface BrandFeignClient{
+public interface BrandFeignClient {
 
-@GetMapping("/brand")
-Result findAll();
+    @GetMapping("/brand")
+    Result findAll();
 
-@GetMapping("/brand/{pageNo}/{pageSize}")
-PageResult findPage(@PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize);
+    @GetMapping("/brand/{pageNo}/{pageSize}")
+    PageResult findPage(@PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize);
 
-@PostMapping("/brand/search/{pageNo}/{pageSize}")
-    Result searchPage(@RequestBody TbBrand brand,@PathVariable("pageNo") Integer pageNo,@PathVariable("pageSize") Integer pageSize);
+    @PostMapping("/brand/search/{pageNo}/{pageSize}")
+    Result searchPage(@RequestBody TbBrand brand, @PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize);
 
 
-@PostMapping("/brand")
+    @PostMapping("/brand")
     Result saveBrand(@RequestBody TbBrand brand);
 
-@PutMapping("/brand")
+    @PutMapping("/brand")
     Result updateBrand(@RequestBody TbBrand brand);
 
-@DeleteMapping("/brand")
-    Result deleteBrand(@RequestParam("ids") Long[]ids);
+    @DeleteMapping("/brand")
+    Result deleteBrand(@RequestParam("ids") Long[] ids);
 
-        }
+    @DeleteMapping("/brand/{id}")
+    Result deleteOneBrand(@PathVariable("id") Long id);
+}

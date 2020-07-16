@@ -54,5 +54,9 @@ public class BrandController {
         return brandFeignClient.deleteBrand(ids);
     }
 
+    @DeleteMapping("/brand/{id}")
+    public Result deleteOneBrand(@PathVariable("id") Long id) {
+        return brandFeignClient.deleteOneBrand(id);
+    }
 
 }

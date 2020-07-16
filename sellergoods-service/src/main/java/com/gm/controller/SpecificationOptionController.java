@@ -40,7 +40,7 @@ public class SpecificationOptionController {
     }
 
     @PutMapping("")
-    public Result updateSpecificationOption(@RequestBody TbSpecificationOption specificationOption) {
+    public Result updateSpecificationOption(@RequestBody List<TbSpecificationOption> specificationOption) {
         return specificationOptionService.updateSpecificationOption(specificationOption);
     }
 
