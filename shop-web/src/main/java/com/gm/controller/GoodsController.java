@@ -2,9 +2,15 @@ package com.gm.controller;
 
 import com.gm.common.PageResult;
 import com.gm.common.Result;
+import com.gm.common.ResultEnum;
 import com.gm.feign.GoodsFeignClient;
 import com.gm.pojo.Goods;
+import com.gm.pojo.TbGoods;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -35,13 +41,22 @@ public class GoodsController {
     }
 
     @PostMapping("/goods/search/{pageNo}/{pageSize}")
-    public Result findPage(@RequestBody Goods goods, @PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize) {
+    public Result findPage(@RequestBody TbGoods goods, @PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize) {
+        String name = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        goods.setSellerId(name);
         return goodsFeignClient.searchPage(goods, pageNo, pageSize);
     }
 
     @PostMapping("/goods")
-    public Result saveGoods(@RequestBody Goods goods) {
-        return goodsFeignClient.saveGoods(goods);
+    public Result saveGoods(@RequestBody Map<String,Object> goods) {
+        Set<String> strings = goods.keySet();
+        for (String string : strings) {
+            System.out.println(string);
+        }
+        System.out.println(goods);
+        return Result.build(ResultEnum.SAVE_SUCCESS,goods);
+//        return goodsFeignClient.saveGoods(goods);
     }
 
     @PutMapping("/goods")

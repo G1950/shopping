@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: content-service
+  profiles:
+    include: db
+server:
+  port: 8767
+
+eureka:
+  instance:
+    instance-id: content-service
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://slave.eureka.com:8762/eureka/,http://master.eureka.com:8761/eureka/
+
+#mybatis配置
+mybatis:
+  mapper-locations: classpath:/mapper/**
+
+#pagehelper分页配置
+pagehelper:
+  helper-dialect: mysql
+  params: count=countSql
+  reasonable: true
+  support-methods-arguments: true

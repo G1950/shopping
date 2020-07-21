@@ -30,7 +30,7 @@ public class PicServiceImpl implements PicService {
     @Override
     public Result uploadPic(MultipartFile file) {
         try {
-            //1、取文件的扩展名
+            //1、取文件名
             String originalFilename = file.getOriginalFilename();
             if (originalFilename == null)
                 return Result.build(ResultEnum.EXCEPTION);
@@ -42,7 +42,7 @@ public class PicServiceImpl implements PicService {
             StorePath storePath = fastFileStorageClient.uploadFile(file.getInputStream(), file.getSize(), extName, null);
             System.out.println("全路径: " + storePath.getFullPath());
             System.out.println("路径: " + storePath.getPath());
-            return Result.build(ResultEnum.UPLOAD_IMG_SUCCESS, baseUrl + "/" + storePath.getFullPath());
+            return Result.build(ResultEnum.UPLOAD_IMG_SUCCESS, baseUrl + storePath.getFullPath());
         } catch (Exception e) {
             e.printStackTrace();
             return Result.build(ResultEnum.UPLOAD_IMG_FAIL);

@@ -41,7 +41,7 @@
 </head>
 
 <body class="hold-transition skin-red sidebar-mini" ng-app="shopping" ng-controller="goodsController"
-      ng-init="selectItemList(1,'0')">
+      ng-init="selectItemList(1,'0');showId()">
 
 <!-- 正文区域 -->
 <section class="content">
@@ -232,7 +232,7 @@
 
                                     <div class="col-md-10 data">
                                     <span ng-repeat="option in spec.options">
-					                         <input type="radio" name="{{option.specId}}" value="{{option.optionName}}"
+					                         <input type="checkbox" name="{{option.specId}}" value="{{option.optionName}}"
                                                     ng-click="selectOptionSpec($event,spec.text,option.optionName)">{{option.optionName}}
                                     </span>
                                     </div>
@@ -262,7 +262,7 @@
                                     <div class="col-md-2 title">是否启用</div>
                                     <div class="col-md-10 data">
                                     <span>
-                                        <input type="checkbox" ng-model="baseSpecList.isStatus" ng-true-value="1"
+                                        <input type="checkbox" ng-model="baseSpecList.isSelected" ng-true-value="1"
                                                ng-false-value="0">
                                     </span>
                                     </div>
@@ -309,11 +309,11 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="specOptList in specList">
-                                        <td ng-repeat="opt in specOptList.spec">{{opt.attributeValue}}</td>
+                                        <td ng-repeat="opt in specOptList.spec">{{showSpecTable(opt.attributeValue)}}</td>
                                         <td>{{specOptList.price}}</td>
                                         <td>{{specOptList.num}}</td>
                                         <td> <span>
-                                        <input type="checkbox" ng-model="specOptList.isStatus" ng-true-value="1"
+                                        <input type="checkbox" ng-model="specOptList.isSelected" ng-true-value="1"
                                                ng-false-value="0" disabled>
                                     </span></td>
                                         <td> <span>
@@ -404,7 +404,6 @@
 
     //Base64预览图片
     var reader = new FileReader();
-
     function loadPic(obj) {
         var files = obj.files;
         var file = files.item(0)
@@ -413,7 +412,6 @@
             alert("图片过大，请重新上传")
             return false
         }
-        console.log("大小：", size)
         reader.readAsDataURL(file);
         reader.onload = function () {
             $("#upload_pic").attr("src", reader.result)

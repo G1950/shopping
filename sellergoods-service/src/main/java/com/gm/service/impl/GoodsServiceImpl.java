@@ -12,6 +12,7 @@ import com.gm.pojo.Goods;
 import com.gm.pojo.TbGoods;
 import com.gm.pojo.TbGoodsExample;
 import com.gm.service.GoodsService;
+import com.sun.org.apache.bcel.internal.generic.I2F;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -53,19 +54,21 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public Result findPage(Goods goods, Integer pageNo, Integer pageSize) {
+    public Result findPage(TbGoods goods, Integer pageNo, Integer pageSize) {
         pageNo = pageNo <= 0 ? 1 : pageNo;
         pageSize = pageSize <= 0 ? 10 : pageSize;
         PageHelper.startPage(pageNo, pageSize);
         Page<TbGoods> page;
         TbGoodsExample example = new TbGoodsExample();
         TbGoodsExample.Criteria criteria = example.createCriteria();
-//        if (goods != null) {
-//            if (goods.getName() != null && goods.getName().length() > 0)
-//                criteria.andNameLike("%" + goods.getName() + "%");
-//            if (goods.getFirstChar() != null && goods.getFirstChar().length() > 0)
-//                criteria.andFirstCharEqualTo(goods.getFirstChar());
-//        }
+        if (goods != null) {
+            if (goods.getAuditStatus() != null && goods.getAuditStatus().length() > 0)
+                criteria.andAuditStatusEqualTo(goods.getAuditStatus());
+            if (goods.getGoodsName() != null && goods.getGoodsName().length() > 0)
+                criteria.andGoodsNameLike("%"+goods.getGoodsName()+"%");
+            if(goods.getSellerId()!=null&&goods.getSellerId().length()>0)
+                criteria.andSellerIdEqualTo(goods.getSellerId());
+        }
         page = (Page<TbGoods>) tbGoodsMapper.selectByExample(example);
         return Result.build(ResultEnum.SUCCESS, PageResult.build(page.getTotal(), page.getResult()));
     }

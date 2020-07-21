@@ -3,6 +3,7 @@ package com.gm.controller;
 import com.gm.common.PageResult;
 import com.gm.common.Result;
 import com.gm.pojo.Goods;
+import com.gm.pojo.TbGoods;
 import com.gm.service.GoodsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,7 +57,7 @@ public class GoodsController {
     }
 
     @PostMapping("/search/{pageNo}/{pageSize}")
-    public Result searchPageGoods(@RequestBody Goods goods, @PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize) {
+    public Result searchPageGoods(@RequestBody TbGoods goods, @PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize) {
         return goodsService.findPage(goods, pageNo, pageSize);
     }
 }

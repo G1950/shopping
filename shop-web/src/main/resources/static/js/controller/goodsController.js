@@ -1,5 +1,5 @@
 //控制层
-app.controller('goodsController', function ($scope, $controller, goodsService, fileService, itemCatService, typeTemplateService, specificationOptionService) {
+app.controller('goodsController', function ($scope, $location,$controller, goodsService,fileService, itemCatService, typeTemplateService, specificationOptionService) {
 
     //继承baseController
     $controller("baseController", {$scope: $scope});
@@ -15,8 +15,8 @@ app.controller('goodsController', function ($scope, $controller, goodsService, f
     //表格分页
     $scope.findPageGoods = function () {
         goodsService.findPage($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage).success(function (data) {
-            $scope.list = data.rows;
-            $scope.paginationConf.totalItems = data.total
+            // $scope.list = data.rows;
+            // $scope.paginationConf.totalItems = data.total
         })
     };
 
@@ -26,21 +26,26 @@ app.controller('goodsController', function ($scope, $controller, goodsService, f
         $scope.entity.goodsDesc.customAttributeItems = angular.toJson($scope.typeTemplate.customAttributeItems)
         $scope.entity.goodsDesc.itemImages = angular.toJson($scope.itemImages)
         $scope.entity.goodsDesc.introduction = editor.html();
-        console.log(editor.html())
+        $scope.entity.items=$scope.specList
         goodsService.save($scope.entity).success(function (data) {
             if (data.code !== 1)
+            {
                 alert(data.msg)
+            }else {
+               window.location.reload();
+            }
         })
     };
 
     //修改表格数据
-    $scope.updateGoods = function () {
-        goodsService.update($scope.entity).success(function (data) {
-            if (data.code !== 1)
-                alert(data.msg)
-            $scope.reloadList();//重新加载
-        })
+    $scope.updateGoods = function (id) {
+        location.href='goods_edit.html?id='+id;
     };
+
+    $scope.showId=function(){
+        $scope.entity.goods.id=$location.search().id
+    }
+
 
     //保存
     $scope.save = function () {
@@ -88,7 +93,7 @@ app.controller('goodsController', function ($scope, $controller, goodsService, f
     $scope.itemImages = []
 
     //物品实体
-    $scope.entity = {goods: {}, goodsDesc: {itemImages: []}};
+    $scope.entity = {goods: {isEnableSpec: '0'}, goodsDesc: {itemImages: []}};
 
     //图片上传
     $scope.uploadPic = function () {
@@ -102,7 +107,6 @@ app.controller('goodsController', function ($scope, $controller, goodsService, f
             } else {
                 alert(data.msg)
             }
-            console.log(data)
         })
     }
 
@@ -196,6 +200,18 @@ app.controller('goodsController', function ($scope, $controller, goodsService, f
         );
     });
 
+    //监听是否启用规格
+    $scope.$watch('entity.goods.isEnableSpec', function (newValue) {
+        if (newValue ==='0')
+        {
+            //置空输入的规格
+            $scope.baseSpecList = {isSelected:'0',isDefault:'0',num: 9999, spec: []}
+            //商品规格列表
+            $scope.specList = []
+        }
+
+    });
+
 
     //获取规格列表
     $scope.OptionList = function (specIds) {
@@ -210,20 +226,36 @@ app.controller('goodsController', function ($scope, $controller, goodsService, f
     }
 
     //规格
-    $scope.baseSpecList = {num: 9999, spec: []}
+    $scope.baseSpecList = {isSelected:'0',isDefault:'0',num: 9999, spec: []}
 
     //选择参数,传入参数: $event事件，specText规格名称，optName规格参数
     $scope.selectOptionSpec = function ($event, specText, optName) {
+        const length = $scope.baseSpecList.spec.length;
         if ($event.target.checked) {
-            const length = $scope.baseSpecList.spec.length;
             for (let i = 0; i < length; i++) {
                 if ($scope.baseSpecList.spec[i].attributeName === specText) { //判断规格参数是否已存入
-                    $scope.baseSpecList.spec[i].attributeValue = optName;
+                    $scope.baseSpecList.spec[i].attributeValue.push(optName);
                     return false;
                 }
 
             }
-            $scope.baseSpecList.spec.push({attributeName: specText, attributeValue: optName}) //参数首次添加
+            $scope.baseSpecList.spec.push({attributeName: specText, attributeValue: [optName]}) //参数首次添加
+        } else {
+            for (let i = 0; i < length; i++) {
+                if ($scope.baseSpecList.spec[i].attributeName === specText) { //判断规格参数是否已存入
+                    //是否有该规格
+                    var index = $scope.baseSpecList.spec[i].attributeValue.indexOf(optName);
+                    //有则删除
+                    $scope.baseSpecList.spec[i].attributeValue.splice(index, 1);
+
+                    //该规格选项是否取消了选择
+                    var specLength = $scope.baseSpecList.spec[i].attributeValue.length;
+                    if (specLength === 0)
+                        $scope.baseSpecList.spec.splice(i, 1);  //取消了选择，则从列表中删除该规格
+                    return false;
+                }
+
+            }
         }
     }
 
@@ -232,19 +264,41 @@ app.controller('goodsController', function ($scope, $controller, goodsService, f
     //添加到规格列表
     $scope.addSpecList = function () {
         var length = $scope.typeTemplate.specIds.length;
-        var base_length = Object.keys($scope.baseSpecList).length
-        console.log(base_length)
-        if (base_length < 5 || $scope.baseSpecList.spec.length < length) {
+        if ($scope.baseSpecList.spec.length < length||$scope.baseSpecList.price==null||$scope.baseSpecList.num==null) {
             alert("请填写完整规格")
             return false;
         }
         $scope.specList.push($scope.baseSpecList)
 
         //置空输入的规格
-        $scope.baseSpecList = {num: 9999, spec: []}
+        $scope.baseSpecList = {isSelected:'0',isDefault:'0',num: 9999, spec: []}
         //置空单选框
         $scope.typeTemplate.specIds.forEach(function (value) {
             $("input[name=" + value.id + "]").attr("checked", false)
+        })
+    }
+
+    //显示规格列表
+    $scope.showSpecTable = function (data) {
+        var str = ''
+        data.forEach(function (val) {
+            str += val + ' , ';
+        })
+        return str.substring(0, str.length - 3)
+    }
+
+    //申请状态
+    $scope.status=['未申请','申请中',"申请通过",'已驳回']
+
+    //获取品牌列表
+    $scope.itemCatList={}
+    $scope.relateList = function () {
+        itemCatService.findAll().success(function (data) {
+            if (data.code === 1) {
+                data.data.forEach(function (res) {
+                    $scope.itemCatList[res.id]=res.name;
+                })
+            }
         })
     }
 });

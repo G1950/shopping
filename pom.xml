@@ -19,6 +19,9 @@
         <module>manager-web</module>
         <module>shop-web</module>
         <module>file-service</module>
+        <module>content-interface</module>
+        <module>content-service</module>
+        <module>portal-web</module>
     </modules>
     <packaging>pom</packaging>
     <description>品优购商城项目</description>

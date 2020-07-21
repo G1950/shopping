@@ -3,6 +3,7 @@ package com.gm.feign;
 import com.gm.common.PageResult;
 import com.gm.common.Result;
 import com.gm.pojo.Goods;
+import com.gm.pojo.TbGoods;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public interface GoodsFeignClient {
     PageResult findPage(@PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize);
 
     @PostMapping("/goods/search/{pageNo}/{pageSize}")
-    Result searchPage(@RequestBody Goods goods, @PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize);
+    Result searchPage(@RequestBody TbGoods goods, @PathVariable("pageNo") Integer pageNo, @PathVariable("pageSize") Integer pageSize);
 
 
     @PostMapping("/goods")

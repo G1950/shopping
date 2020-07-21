@@ -15,7 +15,7 @@ app.controller('baseController', function ($scope, $filter) {
         itemsPerPage: 10,
         perPageOptions: [10, 20, 30, 40, 50],
         onChange: function () {
-            $scope.reloadList();//重新加载
+            $scope.reloadList();//重新加载  这个方法会重复调用两次
         }
     };
 
